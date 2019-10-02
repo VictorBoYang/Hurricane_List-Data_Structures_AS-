@@ -36,7 +36,51 @@ class DoublyLinkedList:
             self.head = new_node
         self.tail = new_node
 
-    def print_forward(self):
+    def insert(self,new_data,index):
+        if (index <= 0):
+            return
+        temp = Node()
+        temp = self.head
+        counter = 0
+        while(counter < index-1 and temp != None):
+                temp = temp.next
+                counter = counter + 1
+        if(temp == None or temp.next == None):
+            return
+        else:
+            new_Node = Node(data = new_data)
+            new_Node.next = temp.next
+            new_Node.pref = temp
+            temp.next.pref = new_Node
+            temp.next = new_Node
+
+    def erase(self,index):
+        if(index < 0 or self.head == None):
+            return
+        temp_pref = Node()
+        temp_pref = self.head
+        if (index == 0):
+            self.head.next.pref = None;
+            self.head = temp_pref.next
+            del(temp_pref)#free()need to be defined
+            return
+        for i in range(index-1):
+            if (temp_pref != None):
+                temp_pref = temp_pref.next
+        if(temp_pref == None or temp_pref.next == None):
+            return
+        after = Node()
+        after = temp_pref.next.next
+        if (after == None):
+            self.tail = temp_pref
+            self.tail.next = None
+            del(temp_pref.next)#free()need to be defined
+        else:
+            del(temp_pref.next)#free()need to be defined
+            temp_pref.next = after
+            after.pref = temp_pref
+
+    def print_Forward(self):
         if (self.head == None):
             print ("It's an empty list")
         else:
@@ -45,7 +89,7 @@ class DoublyLinkedList:
                 print("%s - Wind Speed: %d  MPH; Month Formed: %s; Category %d" % (Node.data.name,Node.data.maxWind,Node.data.monthFormed,Node.data.category))
                 last = Node
                 Node = Node.next
-            print("finish printing")
+            print("finish Forward printing\n...........")
 
     def print_Reverse(self):
         if (self.head == None):
@@ -54,6 +98,18 @@ class DoublyLinkedList:
             Node = self.tail
             while(Node != None):
                 print("%s - Wind Speed: %d  MPH; Month Formed: %s; Category %d" % (Node.data.name,Node.data.maxWind,Node.data.monthFormed,Node.data.category))
-                last = Node
                 Node = Node.pref
-            print("finish printing")
+            print("finish Reverse printing\n............")
+
+    # def print_ReverseChan(self):
+    #     # self.reverse(self.tail)
+    #     Node = self.tail
+    #     while Node != None:
+    #         print("%s - Wind Speed: %d  MPH; Month Formed: %s; Category %d" % (Node.data.name,Node.data.maxWind,Node.data.monthFormed,Node.data.category))
+    #         Node = Node.pref
+    #
+    # def reverse(self, next_node):
+    #     if next_node == None:
+    #         return
+    #     print("%s - Wind Speed: %d  MPH; Month Formed: %s; Category %d" % (next_node.data.name,next_node.data.maxWind,next_node.data.monthFormed,next_node.data.category))
+    #     return self.reverse(next_node.pref)
